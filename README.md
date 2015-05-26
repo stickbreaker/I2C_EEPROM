@@ -10,7 +10,8 @@ Arduino I2C library with support for 24 series EEProms both 8bit address and 16b
     
     Example:
   
-      set_eeprom_size(0xFE); I2C device at Address 0x50 is a 8bit address EEProm, all other 0x5x are 16bit.
+      set_eeprom_size(0xFE);
+        I2C device at Address 0x50 is a 8bit address EEProm, all other 0x5x are 16bit.
     
     NOTE:
       BY DEFAULT all I2C devices are assumed to use 8bit addressing, if you are using any EEProms bigger than 2,048kb
