@@ -1,5 +1,5 @@
 # I2C_EEPROM
-Arduino I2C library to Access 24 series EEProms
+Arduino I2C library with support for 24 series EEProms both 8bit address and 16bit address with WritePage overflow support.
   
   void set_eeprom_size(uint8_t addressSizeFlag); 
   
