@@ -1,22 +1,32 @@
 # I2C_EEPROM
-Arduino I2C library with support for 24 series EEProms both 8bit address and 16bit address with WritePage overflow support.
+Arduino I2C library with support for 24 series EEProms. 
+  8bit address devices
+  16bit address devices.
+  Correctly handles multibyte Writes that rap around page boundaries.
   
   void set_eeprom_size(uint8_t addressSizeFlag); 
   
-    Set 8bit or 16bit Address flag for I2C devices with Address range of 0x50 thru 0x57 (EEPROM devices) 
-    addressSizeFlag is a bit field.
-      0=8bit, 1= 16bit;
-      bit 0 = 0x50, bit 1 = 0x51 .. bit 7 = 0x57.
-    
+    Set 8bit or 16bit Address flag for I2C devices with Address range of 0x50 thru 0x57 (EEPROM devices).
+    *Parameters*
+      addressSizeFlag: A bit field.
+        0:  8 bit address device
+        1:  16 bit address device
+        bit order: 
+          bit 0 represents address size for device at I2C address 0x50.
+          bit 1 represents address size for device at I2C address 0x51.
+          ..
+          bit 7 represents address size for device at I2C address 0x57.
+
     Example:
   
-      set_eeprom_size(0xFE);
-        I2C device at Address 0x50 is a 8bit address EEProm, all other 0x5x are 16bit.
+      set_eeprom_size(0xFE); //B11111110
+        // I2C device at Address 0x50 is a 8bit address EEProm, all other 0x5x are 16bit.
     
     NOTE:
-      BY DEFAULT all I2C devices are assumed to use 8bit addressing, if you are using any EEProms bigger than 2,048kb
-      (256x8) you must call this function, and correctly identify all devices 0x50..0x57 that use 16bit addressing.
-      Some devices like 24LC04 respond to all I2C address from 0x50 to 0x57, each address acts like a 8bit address EEPROM.
+      BY DEFAULT all I2C devices are assumed to use 8bit addressing, if you are using any EEProms bigger
+      than 2,048kb(256x8bits), you must call this function, and correctly identify all devices 0x50..0x57
+      that use 16bit addressing.  Some devices like 24LC04 respond to all I2C address from 0x50 to 0x57.
+      Each address acts like a 8bit address EEPROM.
   
   uint8_t get_eeprom_size(void);
   
@@ -24,8 +34,11 @@ Arduino I2C library with support for 24 series EEProms both 8bit address and 16b
   
   bool ready(uint8_t i2c_adr, uint16_t time_out = 0);
    
-    Checks that I2C device is ready to receive commands, used mainly to allow EEProm device to complete write cycle.
-    time_out is milliseconds to wait for device to become ready.
+    Checks that I2C device is ready to receive commands. Used mainly to to test if EEProm device has
+    completed pending write cycle.
+    *Parameters*
+      i2c_adr:  7bit I2C address
+      time_out: Milliseconds to wait for device to become ready.
    
     Returns: 
       TRUE = device responded.
